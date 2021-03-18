@@ -10,7 +10,7 @@
         <label for="senhaInput">Senha</label>
         <input class="form-control" id="senhaInput" [(ngModel)]="senha" placeholder="Digite a senha:">
       </div>
-      <button type="button" class="btn btn-success" (click)="gerarSenha()">Gerar</button>
+      <button type="button" class="btn btn-success" (click)="gerarChavesRSA()">Gerar</button>
 
     </div>
     <div *ngIf="senhaGerada">Chave secreta gerada com sucesso!</div>
@@ -27,9 +27,9 @@
       <button type="button" class="btn btn-success" (click)="criptografar()">Criptografar</button>
     </div>
 
-    <form id="descriptografar">
+    <form id="decriptografar">
       <div class="form-group">
-        <p class="textoCriptografado" id="textoCriptografado">{{textoCriptografado}}</p>
+        <p class="textoCriptografado">{{textoCriptografado}}</p>
       </div>
       <button type="button" class="btn btn-primary" (click)="decriptografar()">Decriptografar</button>
     </form>
