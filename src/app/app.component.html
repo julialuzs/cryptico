@@ -7,10 +7,9 @@
     <h3>Crie sua chave secreta baseada em uma senha:</h3>
     <div id="inputSenha">
       <div class="form-group">
-        <label for="senhaInput">Senha</label>
         <input class="form-control" id="senhaInput" [(ngModel)]="senha" placeholder="Digite a senha:">
+        <button type="button" class="btn btn-success" (click)="gerarChavesRSA()">Gerar</button>
       </div>
-      <button type="button" class="btn btn-success" (click)="gerarChavesRSA()">Gerar</button>
 
     </div>
     <div *ngIf="senhaGerada">Chave secreta gerada com sucesso!</div>
@@ -21,8 +20,7 @@
 
     <div id="encriptografar">
       <div class="form-group">
-        <label for="textInput">Texto</label>
-        <input type="text" class="form-control" id="textInput" [(ngModel)]="text" placeholder="Digite seu texto:">
+        <textarea type="text" class="form-control" id="textInput" [(ngModel)]="text" placeholder="Digite seu texto:"></textarea>
       </div>
       <button type="button" class="btn btn-success" (click)="criptografar()">Criptografar</button>
     </div>
