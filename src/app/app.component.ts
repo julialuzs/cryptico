@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import * as crypto from 'crypto-js';
 import * as AsymmetricCrypto from 'asymmetric-crypto';
 
@@ -7,7 +7,7 @@ interface RSA {
   secretKey: string;
 };
 
-interface Encriptado {
+interface ChaveSecreta {
   data: string;
   nonce: string;
 };
@@ -19,25 +19,34 @@ interface Encriptado {
 })
 export class AppComponent {
 
-  chaveSecreta: any;
-  chaveSecretaGerada = false;
+  chaveSecreta: any = '';
   senha = '';
   texto = '';
 
   textoCriptografado = '';
   textoDecriptografado = '';
 
-  objetoChaveSecreta: Encriptado;
+  chaveCriptografada = "";
+  chaveDecriptada = "";
+
+  objetoChaveSecreta: ChaveSecreta;
   chaveRSA: RSA;
 
+  @Input() julia;
+
+  get chaveSecretaGerada(): boolean {
+    return this.chaveSecreta?.toString().length > 0;
+  }
+
   public gerarChaveSecreta() {
+    // The US National Institute of Standards and Technology recommends a salt length of 128 bits
     var salt = crypto.lib.WordArray.random(128 / 8);
 
     this.chaveSecreta = crypto.PBKDF2(this.senha, salt, {
       keySize: 256 / 32
     });
 
-    this.chaveSecretaGerada = true;
+    this.gerarChavesRSA();
 
     console.log('chave secreta: ', this.chaveSecreta.toString())
   }
@@ -62,28 +71,32 @@ export class AppComponent {
 
   public gerarChavesRSA() {
     this.chaveRSA = AsymmetricCrypto.keyPair();
-    this.criptografarChave();
+
+    console.log('chave pública:', this.chaveRSA.publicKey)
+    console.log('chave privada:', this.chaveRSA.secretKey)
   }
 
-  private criptografarChave() {
+  public criptografarChave() {
     this.objetoChaveSecreta = AsymmetricCrypto.encrypt(
       this.chaveSecreta.toString(),
       this.chaveRSA.publicKey,
       this.chaveRSA.secretKey
     );
 
-    console.log('chave criptografada:', this.objetoChaveSecreta.data)
+    this.chaveCriptografada = this.objetoChaveSecreta.data
+
+    console.log('chave criptografada:', this.chaveCriptografada)
   }
 
   public decriptografarChave() {
-    const chaveDecriptada = AsymmetricCrypto.decrypt(
+    this.chaveDecriptada = AsymmetricCrypto.decrypt(
       this.objetoChaveSecreta.data,
       this.objetoChaveSecreta.nonce,
       this.chaveRSA.publicKey,
       this.chaveRSA.secretKey
     );
 
-    console.log('senha decriptografado:', chaveDecriptada)
+    console.log('chave decriptografado:', this.chaveDecriptada)
   }
 
 }

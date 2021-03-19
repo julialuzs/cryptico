@@ -16,7 +16,7 @@
   </div>
 
   <div class="jumbotron">
-    <h3>Encriptografe e desencriptografe com a chave seu texto:</h3>
+    <h3>Encriptografe e decriptografe com a chave seu texto:</h3>
 
     <div id="encriptografar">
       <div class="form-group">
@@ -32,12 +32,18 @@
       <button type="button" class="btn btn-primary" (click)="decriptografarTexto()">Decriptografar</button>
     </form>
 
-    <p class="textoDecriptografado">{{textoDecriptografado}}</p>
+    <div class="form-group">
+      <p class="textoDecriptografado">{{textoDecriptografado}}</p>
+    </div>
   </div>
 
   <div class="jumbotron">
-    <h3>Criptografar senha:</h3>
-      <button type="button" class="btn btn-success" (click)="gerarChavesRSA()">Criptografar</button>
-      <button type="button" class="btn btn-success" (click)="decriptografarChave()">Decriptografar</button>
+    <h3>Criptografar chave secreta:</h3>
+
+    <button type="button" class="btn btn-success" (click)="criptografarChave()">Criptografar</button>
+    <p class="textoCriptografado">{{chaveCriptografada}}</p>
+
+    <button type="button" class="btn btn-primary" (click)="decriptografarChave()">Decriptografar</button>
+    <p class="textoCriptografado">{{chaveDecriptada }}</p>
   </div>
 </div>
