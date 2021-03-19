@@ -8,11 +8,11 @@
     <div id="inputSenha">
       <div class="form-group">
         <input class="form-control" id="senhaInput" [(ngModel)]="senha" placeholder="Digite a senha:">
-        <button type="button" class="btn btn-success" (click)="gerarChavesRSA()">Gerar</button>
+        <button type="button" class="btn btn-success" (click)="gerarChaveSecreta()">Gerar</button>
       </div>
 
     </div>
-    <div *ngIf="senhaGerada">Chave secreta gerada com sucesso!</div>
+    <div *ngIf="chaveSecretaGerada">Chave secreta gerada com sucesso!</div>
   </div>
 
   <div class="jumbotron">
@@ -20,18 +20,23 @@
 
     <div id="encriptografar">
       <div class="form-group">
-        <textarea type="text" class="form-control" id="textInput" [(ngModel)]="text" placeholder="Digite seu texto:"></textarea>
+        <textarea type="text" class="form-control" id="textInput" [(ngModel)]="texto" placeholder="Digite seu texto:"></textarea>
       </div>
-      <button type="button" class="btn btn-success" (click)="criptografar()">Criptografar</button>
+      <button type="button" class="btn btn-success" (click)="criptografarTexto()">Criptografar</button>
     </div>
 
     <form id="decriptografar">
       <div class="form-group">
         <p class="textoCriptografado">{{textoCriptografado}}</p>
       </div>
-      <button type="button" class="btn btn-primary" (click)="decriptografar()">Decriptografar</button>
+      <button type="button" class="btn btn-primary" (click)="decriptografarTexto()">Decriptografar</button>
     </form>
 
     <p class="textoDecriptografado">{{textoDecriptografado}}</p>
+  </div>
+
+  <div class="jumbotron">
+    <h3>Criptografar senha:</h3>
+      <button type="button" class="btn btn-success" (click)="gerarChavesRSA()">Criptografar</button>
   </div>
 </div>

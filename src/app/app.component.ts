@@ -19,68 +19,69 @@ interface Encriptado {
 })
 export class AppComponent {
 
-  senhaSecreta: any;
+  chaveSecreta: any;
+  chaveSecretaGerada = false;
   senha = '';
-  text = '';
+  texto = '';
 
   textoCriptografado = '';
   textoDecriptografado = '';
 
-  senhaGerada = false;
+  chaveSecretaCriptografada;
 
-  objetoSenhaSecreta: Encriptado;
+  objetoChaveSecreta: Encriptado;
   chaveRSA: RSA;
 
-  // simetrica
-  // public gerarSenha() {
-  //   var salt = crypto.lib.WordArray.random(128 / 8);
+  public gerarChaveSecreta() {
+    var salt = crypto.lib.WordArray.random(128 / 8);
 
-  //   this.senhaSecreta = crypto.PBKDF2(this.senha, salt, {
-  //     keySize: 256 / 32
-  //   });
+    this.chaveSecreta = crypto.PBKDF2(this.senha, salt, {
+      keySize: 256 / 32
+    });
 
-  //   this.senhaGerada = true;
+    this.chaveSecretaGerada = true;
 
-  //   console.log(this.senhaSecreta.toString())
-  // }
-
-  public criptografar(): void {
-    const senha = this.senhaSecreta.toString();
-    const criptografado = crypto.AES.encrypt(this.text, senha);
-
-    this.textoCriptografado = criptografado.toString();
+    console.log('chave secreta: ', this.chaveSecreta.toString())
   }
 
-  public decriptografar() {
-    const senha = this.senhaSecreta.toString();
-    const decriptografado = crypto.AES.decrypt(this.textoCriptografado, senha);
+  public criptografarTexto(): void {
+    const chave = this.chaveSecreta.toString();
+    // AES = Advanced Encryption Standard
+    const criptografado = crypto.AES.encrypt(this.texto, chave);
+
+    this.textoCriptografado = criptografado.toString();
+    console.log('texto criptografado:', this.textoCriptografado)
+  }
+
+  public decriptografarTexto() {
+    const chave = this.chaveSecreta.toString();
+    const decriptografado = crypto.AES.decrypt(this.textoCriptografado, chave);
 
     this.textoDecriptografado = decriptografado.toString(crypto.enc.Utf8);
+    console.log('chave decriptografado:', this.textoDecriptografado)
   }
 
   // assimetrica
   public gerarChavesRSA() {
     this.chaveRSA = AsymmetricCrypto.keyPair();
-    this.criptografarSenha();
+    this.criptografarChave();
   }
 
-  private criptografarSenha() {
-    this.objetoSenhaSecreta = AsymmetricCrypto.encrypt(
-      this.senha,
+  private criptografarChave() {
+    this.objetoChaveSecreta = AsymmetricCrypto.encrypt(
+      this.chaveSecreta.toString(),
       this.chaveRSA.publicKey,
       this.chaveRSA.secretKey
     );
 
-    this.senhaSecreta = this.objetoSenhaSecreta.data;
-    console.log('senha decriptografado:', this.senhaSecreta)
-    this.senhaGerada = true;
-    this.decriptografarSenha();
+    console.log('chave criptografada:', this.objetoChaveSecreta.data)
+    this.decriptografarChave();
   }
 
-  private decriptografarSenha() {
+  private decriptografarChave() {
     const chaveDecriptada = AsymmetricCrypto.decrypt(
-      this.objetoSenhaSecreta.data,
-      this.objetoSenhaSecreta.nonce,
+      this.objetoChaveSecreta.data,
+      this.objetoChaveSecreta.nonce,
       this.chaveRSA.publicKey,
       this.chaveRSA.secretKey
     );
