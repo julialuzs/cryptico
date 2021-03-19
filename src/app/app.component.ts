@@ -27,8 +27,6 @@ export class AppComponent {
   textoCriptografado = '';
   textoDecriptografado = '';
 
-  chaveSecretaCriptografada;
-
   objetoChaveSecreta: Encriptado;
   chaveRSA: RSA;
 
@@ -46,22 +44,22 @@ export class AppComponent {
 
   public criptografarTexto(): void {
     const chave = this.chaveSecreta.toString();
-    // AES = Advanced Encryption Standard
-    const criptografado = crypto.AES.encrypt(this.texto, chave);
 
+    const criptografado = crypto.AES.encrypt(this.texto, chave);
     this.textoCriptografado = criptografado.toString();
+
     console.log('texto criptografado:', this.textoCriptografado)
   }
 
   public decriptografarTexto() {
     const chave = this.chaveSecreta.toString();
-    const decriptografado = crypto.AES.decrypt(this.textoCriptografado, chave);
 
+    const decriptografado = crypto.AES.decrypt(this.textoCriptografado, chave);
     this.textoDecriptografado = decriptografado.toString(crypto.enc.Utf8);
+
     console.log('chave decriptografado:', this.textoDecriptografado)
   }
 
-  // assimetrica
   public gerarChavesRSA() {
     this.chaveRSA = AsymmetricCrypto.keyPair();
     this.criptografarChave();
@@ -75,10 +73,9 @@ export class AppComponent {
     );
 
     console.log('chave criptografada:', this.objetoChaveSecreta.data)
-    this.decriptografarChave();
   }
 
-  private decriptografarChave() {
+  public decriptografarChave() {
     const chaveDecriptada = AsymmetricCrypto.decrypt(
       this.objetoChaveSecreta.data,
       this.objetoChaveSecreta.nonce,
