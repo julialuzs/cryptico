@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import * as crypto from 'crypto-js';
 import * as AsymmetricCrypto from 'asymmetric-crypto';
 
@@ -17,7 +17,7 @@ interface ChaveSecreta {
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
 
   chaveSecreta: any = '';
   senha = '';
@@ -34,19 +34,20 @@ export class AppComponent {
 
   @Input() julia;
 
+  ngOnInit() {
+    this.gerarChavesRSA();
+  }
+
   get chaveSecretaGerada(): boolean {
     return this.chaveSecreta?.toString().length > 0;
   }
 
   public gerarChaveSecreta() {
-    // The US National Institute of Standards and Technology recommends a salt length of 128 bits
     var salt = crypto.lib.WordArray.random(128 / 8);
 
     this.chaveSecreta = crypto.PBKDF2(this.senha, salt, {
       keySize: 256 / 32
     });
-
-    this.gerarChavesRSA();
 
     console.log('chave secreta: ', this.chaveSecreta.toString())
   }
